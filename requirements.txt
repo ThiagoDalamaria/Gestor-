@@ -1,0 +1,2 @@
+# Stock Management System Requirements
+# SQLite is part of Python standard library, no additional packages required
