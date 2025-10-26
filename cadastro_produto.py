@@ -1,22 +1,22 @@
 from funções import linha_l
 
 
-
 linha_l()
 print("Cadastro de Produto".center(30))
 linha_l()
 
-estoque = []
+estoque =  []
 def cadastrar_produto():
         # -- Produto --
     while True:
         nome_produto = input("Nome do Produto: ").strip()
-        if all(parte.isalpha() for parte in nome_produto.split()):
+        if nome_produto and all(p.isalpha() for p in nome_produto.split()):
             nome_produto = nome_produto.title()
             break
 
         print("\033[91mErro: Nome inválido.\033[0m")
         linha_l()
+
 
         # -- Código do produto --
     while True:
@@ -46,9 +46,9 @@ def cadastrar_produto():
 
         except ValueError:
             print("\033[93m⚠️  Valor inválido! Digite apenas números, ex: 38.49 ")
-            linha_l()
+        linha_l()
 
-            # Quantidade de itens
+            # -- Quantidade de itens --
     while True:
         quantidade_str =  input("Quantidade de produto: ")
 
@@ -63,13 +63,15 @@ def cadastrar_produto():
             print("\033[93m⚠️  Valor inválido! Digite apenas números. ex: 2, 5, 19 ")
             linha_l()
 
+    # -- Salvar Lista ---
+    produto = {
+        "nome": nome_produto,
+        "codigo": codigo_produto,
+        "preco": preco_custo,
+        "quantidade": quantidade
+    }
+    estoque.append(produto)
 
-
-
-
-while True:
-        cadastrar_produto()
-        break
-
+    print(f"✅  Produto {nome_produto} foi cadastrado com sucesso! ")
 
 
