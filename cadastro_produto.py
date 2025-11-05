@@ -1,12 +1,14 @@
+from conexao import criar_conexao
 from funções import linha_l
 
 
-linha_l()
-print("Cadastro de Produto".center(30))
-linha_l()
 
-estoque =  []
 def cadastrar_produto():
+
+    linha_l()
+    print("Cadastro de Produto".center(30))
+    linha_l()
+
         # -- Produto --
     while True:
         nome_produto = input("Nome do Produto: ").strip()
@@ -63,15 +65,43 @@ def cadastrar_produto():
             print("\033[93m⚠️  Valor inválido! Digite apenas números. ex: 2, 5, 19 ")
             linha_l()
 
-    # -- Salvar Lista ---
-    produto = {
-        "nome": nome_produto,
-        "codigo": codigo_produto,
-        "preco": preco_custo,
-        "quantidade": quantidade
-    }
-    estoque.append(produto)
 
-    print(f"✅  Produto {nome_produto} foi cadastrado com sucesso! ")
+    # ---  Salvar no Banco ---
+    conexao = None
+    cursor = None
+    try:
+        conexao = criar_conexao()
+        if not conexao:
+            print("\033[91m❌ Falha ao conectar ao banco de dados.\033[0m")
+            return
 
+        cursor = conexao.cursor()
+        query = """
+            INSERT INTO produtos (nome, codigo, preco, quantidade)
+            VALUES (%s, %s, %s, %s)
+        """
+        valores = (nome_produto, codigo_produto, preco_custo, quantidade)
+        cursor.execute(query, valores)
+        conexao.commit()
+
+        print(f"\033[92m✅ Produto '{nome_produto}' cadastrado com sucesso no banco de dados!\033[0m")
+        linha_l()
+
+    except Exception as e:
+        print(f"\033[91m❌ Erro ao cadastrar produto: {e}\033[0m")
+        linha_l()
+
+    finally:
+        # fecha cursor e conexão com checagem (evita referência antes de atribuir)
+        try:
+            if cursor is not None:
+                cursor.close()
+        except BaseException:
+            pass
+
+        try:
+            if conexao is not None and hasattr(conexao, "is_connected") and conexao.is_connected():
+                conexao.close()
+        except BaseException:
+            pass
 
