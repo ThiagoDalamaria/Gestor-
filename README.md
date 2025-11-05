@@ -12,7 +12,7 @@ Este projeto é um sistema simples e funcional de controle de estoque, desenvolv
 
 📊 Consultar produtos por nome, categoria ou código.
 
-🔐 Controle básico de login (opcional).
+🔐 Controle básico de login.
 
 💾 Persistência dos dados em banco de dados SQL.
 
