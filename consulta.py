@@ -1,15 +1,18 @@
 from funções import linha_l
-from cadastro import estoque
+from db import listar_produto
 
 
 def consulta_cadastro():
-    if not estoque:
-        print("❌ Não há nenhum cliente cadastrado. ")
+    linha_l()
+    produto = listar_produto()
+    if not produto:
+        print("\033[93m❌ Não há produtos cadastrados.\033[0m")
         linha_l()
+        return
 
-    else:
-        print("\n Lista de Produtos: ")
-        for i, produto in enumerate(estoque,1):
-            print(f"{i}. Nome: {produto['nome']}, Código: {produto['codigo']}, "
-                  f"Preço: {produto['preco']}, Quantidade: {produto['quantidade']}")
-            linha_l()
+    print("\nLista de Produtos:")
+    for p in produto:
+        # formata preço com 2 casas
+        preco_fmt = f"{p['preco']:.2f}"
+        print(f"{p['id']}. Nome: {p['nome']} | Código: {p['codigo']} | Preço: {preco_fmt} | Qtde: {p['quantidade']}")
+    linha_l()
