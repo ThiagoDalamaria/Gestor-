@@ -77,7 +77,7 @@ def cadastrar_produto():
 
         cursor = conexao.cursor()
         query = """
-            INSERT INTO produtos (nome, codigo, preco, quantidade)
+            INSERT INTO cadastro (nome, codigo, preco, quantidade)
             VALUES (%s, %s, %s, %s)
         """
         valores = (nome_produto, codigo_produto, preco_custo, quantidade)
@@ -92,7 +92,7 @@ def cadastrar_produto():
         linha_l()
 
     finally:
-        # fecha cursor e conexão com checagem (evita referência antes de atribuir)
+
         try:
             if cursor is not None:
                 cursor.close()
@@ -104,4 +104,3 @@ def cadastrar_produto():
                 conexao.close()
         except BaseException:
             pass
-
