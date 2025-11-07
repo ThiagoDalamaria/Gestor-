@@ -12,7 +12,7 @@ def consulta_cadastro():
 
     print("\nLista de Produtos:")
     for p in produto:
-        # formata preço com 2 casas
+        
         preco_fmt = f"{p['preco']:.2f}"
         print(f"{p['id']}. Nome: {p['nome']} | Código: {p['codigo']} | Preço: {preco_fmt} | Qtde: {p['quantidade']}")
     linha_l()
