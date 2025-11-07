@@ -25,7 +25,6 @@ def get_conn():
         return None
 
 def criar_tabela_produtos():
-    """Cria a tabela produtos se não existir."""
     sql = """
           CREATE TABLE IF NOT EXISTS produtos \
           ( \
@@ -70,7 +69,6 @@ def criar_tabela_produtos():
             conn.close()
 
 def inserir_produto(nome: str, codigo: str, preco: Decimal, quantidade: int):
-    """Insere produto. Retorna id inserido ou None em caso de erro."""
     sql = "INSERT INTO produtos (nome, codigo, preco, quantidade) VALUES (%s, %s, %s, %s)"
     conn = get_conn()
     if not conn:
@@ -82,7 +80,7 @@ def inserir_produto(nome: str, codigo: str, preco: Decimal, quantidade: int):
         conn.commit()
         return cursor.lastrowid
     except mysql.connector.IntegrityError as ie:
-        #por exemplo: código duplicado (UNIQUE)
+
         raise ie
     except Error as e:
         raise e
@@ -93,27 +91,44 @@ def inserir_produto(nome: str, codigo: str, preco: Decimal, quantidade: int):
             conn.close()
 
 def listar_produto():
-    """Retorna lista de dicts com os produtos."""
-    sql = "SELECT id, nome, codigo, preco, quantidade, criado_em FROM produtos ORDER BY id"
+    """Retorna lista de dicts com os produtos da tabela 'cadastro'."""
+    sql = """
+          SELECT idcadastro AS id, \
+                 nome       AS nome, \
+                 codigo     AS codigo, \
+                 preco      AS preco, \
+                 quantidade AS quantidade
+          FROM cadastro
+          ORDER BY idcadastro \
+          """
+
     conn = get_conn()
     if not conn:
         return []
+
     cursor = None
     try:
         cursor = conn.cursor(dictionary=True)
         cursor.execute(sql)
-        return cursor.fetchall()
+        resultados = cursor.fetchall()
+
+
+        print("DEBUG listar_produto ->", resultados)
+
+        return resultados
+
     except Error as e:
         print(f"\033[91m❌ Erro ao listar produtos: {e}\033[0m")
         return []
+
     finally:
         if cursor is not None:
             cursor.close()
         if conn.is_connected():
             conn.close()
+            
 
 def buscar_por_nome(nome: str):
-    """Busca produtos com nome case-insensitive. Retorna lista."""
     sql = "SELECT id, nome, codigo, preco, quantidade FROM produtos WHERE LOWER(nome) = LOWER(%s)"
     conn = get_conn()
     if not conn:
@@ -133,7 +148,6 @@ def buscar_por_nome(nome: str):
             conn.close()
 
 def remover_por_id(produto_id: int):
-    """Remove produto por id. Retorna número de linhas afetadas (0/1)."""
     sql = "DELETE FROM produtos WHERE id = %s"
     conn = get_conn()
     if not conn:
