@@ -13,7 +13,7 @@ def criar_conexao():
             port=os.getenv("DB_PORT"),
             user=os.getenv("DB_USER"),
             password=os.getenv("DB_PASS"),
-            datebase=os.getenv("DB_NAME")
+            database=os.getenv("DB_NAME")
         )
 
         if conexao.is_connected():
