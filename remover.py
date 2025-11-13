@@ -1,22 +1,52 @@
 from funções import linha_l
-from cadastro import estoque
+from db import buscar_por_nome, remover_por_id
 
-
-# -- Remover cadastro --
 def remover_produto():
-    if not estoque:
-        print("❌  Nenhum cadastro para remover.  ")
+    linha_l()
+    nome = input("Digite o nome do produto a remover: ").strip()
+    if not nome:
+        print("\033[93m⚠️ Nome vazio. Operação cancelada.\033[0m")
+        linha_l()
         return
 
-    nome_produto = input("Digite o nome que você gostaria de remover do cadastro: ").strip()
-    encontrado = False
+    encontrados = buscar_por_nome(nome)
+    if not encontrados:
+        print(f"\033[93m⚠️ Produto '{nome}' não encontrado.\033[0m")
+        linha_l()
+        return
 
-    for lista_produto in estoque:
-        if lista_produto ["Nome do Produto"].lower == nome_produto.lower():
-            estoque.remove(nome_produto)
-            print(f"🚮  Cadastro {nome_produto} foi removido com sucesso! ")
-            encontrado = True
+
+    if len(encontrados) > 1:
+        print("Foram encontrados vários produtos com esse nome:")
+        for p in encontrados:
+            print(f"{p['id']}: {p['nome']} — Código: {p['codigo']} — Qtde: {p['quantidade']}")
+        linha_l()
+        try:
+            escolha = int(input("Digite o id do produto que deseja remover: ").strip())
+        except ValueError:
+            print("\033[93m⚠️ Entrada inválida. Operação cancelada.\033[0m")
             linha_l()
-            break
-        if not encontrado:
-            print(f"⚠️  Cliente {nome_produto} não foi encontrado. ")
+            return
+
+        removido = remover_por_id(escolha)
+        if removido:
+            print("\033[92m🚮 Produto removido com sucesso!\033[0m")
+        else:
+            print("\033[93m⚠️ Nenhum produto removido (id inválido).\033[0m")
+        linha_l()
+        return
+
+
+    p = encontrados[0]
+    confirma = input(f"Confirma remover '{p['nome']}' (código {p['codigo']})? [s/N]: ").strip().lower()
+    if confirma != "s":
+        print("Operação cancelada.")
+        linha_l()
+        return
+
+    removido = remover_por_id(p['id'])
+    if removido:
+        print("\033[92m🚮 Produto removido com sucesso!\033[0m")
+    else:
+        print("\033[91m❌ Falha ao remover produto.\033[0m")
+    linha_l()
