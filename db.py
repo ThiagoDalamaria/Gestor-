@@ -126,10 +126,10 @@ def listar_produto():
             cursor.close()
         if conn.is_connected():
             conn.close()
-            
+
 
 def buscar_por_nome(nome: str):
-    sql = "SELECT id, nome, codigo, preco, quantidade FROM produtos WHERE LOWER(nome) = LOWER(%s)"
+    sql = "SELECT idcadastro AS id, nome, codigo, preco, quantidade FROM cadastro WHERE LOWER(nome) = LOWER(%s)"
     conn = get_conn()
     if not conn:
         return []
@@ -148,7 +148,7 @@ def buscar_por_nome(nome: str):
             conn.close()
 
 def remover_por_id(produto_id: int):
-    sql = "DELETE FROM produtos WHERE id = %s"
+    sql = "DELETE FROM cadastro WHERE idcadastro = %s"
     conn = get_conn()
     if not conn:
         return 0
