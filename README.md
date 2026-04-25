@@ -1,4 +1,4 @@
-**🧾 Sistema de Gerenciamento de Estoque — Python + SQL**
+##🧾 Sistema de Gerenciamento de Estoque — Python + SQL##
 
 Este projeto é um sistema simples e funcional de controle de estoque, desenvolvido em Python, com integração a banco de dados SQL. O objetivo é permitir o cadastro, atualização, exclusão e consulta de produtos, facilitando a organização e acompanhamento de entradas e saídas no estoque. 
 
