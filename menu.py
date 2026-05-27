@@ -3,6 +3,7 @@ from cadastro import cadastrar_produto
 from remover import remover_produto
 from consulta import consulta_cadastro
 from funções import linha_l
+from atualizar import atualizar_produto_menu
 
 
 while True:
@@ -15,7 +16,8 @@ while True:
     print("1️⃣  -  Cadastrar Produto ")
     print("2️⃣  -  Remover Produto ")
     print("3️⃣  -  Lista cadastrada ")
-    print("4️⃣  -  Encerrar programa ")
+    print("4️⃣  -  Atualizar cadastro ")
+    print("5️⃣  -  Encerrando programa ")
     linha_l()
 
     opcao = input("Escolha uma opção: ").strip()
