@@ -69,6 +69,7 @@ def criar_tabela_produtos():
             conn.close()
 
 def inserir_produto(nome: str, codigo: str, preco: Decimal, quantidade: int):
+    """ Função de enserir novo produto no banco de dados """
     sql = "INSERT INTO produtos (nome, codigo, preco, quantidade) VALUES (%s, %s, %s, %s)"
     conn = get_conn()
     if not conn:
@@ -129,6 +130,7 @@ def listar_produto():
 
 
 def buscar_por_nome(nome: str):
+    """ Função de busca por nome de produdo cadastrado """
     sql = "SELECT idcadastro AS id, nome, codigo, preco, quantidade FROM cadastro WHERE LOWER(nome) = LOWER(%s)"
     conn = get_conn()
     if not conn:
@@ -148,6 +150,7 @@ def buscar_por_nome(nome: str):
             conn.close()
 
 def remover_por_id(produto_id: int):
+    """ Função de remover cadastro """
     sql = "DELETE FROM cadastro WHERE idcadastro = %s"
     conn = get_conn()
     if not conn:
@@ -163,6 +166,40 @@ def remover_por_id(produto_id: int):
         return 0
     finally:
         if cursor is not None:
+            cursor.close()
+        if conn.is_connected():
+            conn.close()
+
+
+
+def atualizar_produto(produto_id: int, nome: str, codigo: str, preco: float, quantidade: int):
+    """ Função de atualizar cadastro """
+    sql = """
+        UPDATE cadastro
+        Set nome = %s,
+            codigo = %s,
+            preco = %s,
+            quantidade = %s
+        WHERE idcadastro = %s
+    """
+
+    conn = get_conn()
+    if not conn:
+        return 0
+
+    cursor = None
+    try:
+        cursor = conn.cursor()
+        cursor.execute(sql, (nome, codigo, preco, quantidade, produto_id))
+        conn.commit()
+        return cursor.rowcount
+
+    except Error as e:
+        print(f"\033[91m❌ Erro ao atualizar produto: {e}\033[0m")
+        return 0
+
+    finally:
+        if cursor:
             cursor.close()
         if conn.is_connected():
             conn.close()
