@@ -113,9 +113,6 @@ def listar_produto():
         cursor.execute(sql)
         resultados = cursor.fetchall()
 
-
-        print("DEBUG listar_produto ->", resultados)
-
         return resultados
 
     except Error as e:
