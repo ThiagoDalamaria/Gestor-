@@ -29,6 +29,8 @@ while True:
     elif opcao == "3":
         consulta_cadastro()
     elif opcao == "4":
+        atualizar_produto_menu()
+     elif opcao == "5":
         print("Encerrando... ")
         break
     else:
