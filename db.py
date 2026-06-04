@@ -200,3 +200,38 @@ def atualizar_produto(produto_id: int, nome: str, codigo: str, preco: float, qua
             cursor.close()
         if conn.is_connected():
             conn.close()
+
+
+
+def buscar_usuario(usuario):
+    sql = """
+        SELECT id, usuario, senha
+        FROM usuarios
+        WHERE usuario = %s
+    """
+
+    conn = get_conn()
+
+    if not conn:
+        return None
+
+    cursor = None
+
+    try:
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute(sql, (usuario,))
+
+        return cursor.fetchone()
+
+    except Error as e:
+        print(f"\033[91m❌ Erro ao buscar usuário: {e}\033[0m")
+        return None
+
+    finally:
+        if cursor:
+            cursor.close()
+
+        if conn.is_connected():
+            conn.close()
+
