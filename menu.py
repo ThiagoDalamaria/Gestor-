@@ -4,6 +4,10 @@ from remover import remover_produto
 from consulta import consulta_cadastro
 from funções import linha_l
 from atualizar import atualizar_produto_menu
+from login import realizar_login
+
+if not realizar_login():
+    exit()
 
 
 while True:
